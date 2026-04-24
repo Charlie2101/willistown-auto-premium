@@ -2,9 +2,16 @@ import { useState } from "react";
 import { MapPin, Phone, Clock, Mail, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useReveal } from "@/hooks/use-reveal";
 
+// TODO(before publish): Replace with the real Willistown Auto Repair phone, address, hours, and email.
+// TODO(before publish): Set VITE_FORMSPREE_ENDPOINT in project settings to a real Formspree (or Web3Forms)
+//   endpoint so submissions actually email Jason. Without it, the form falls back to a demo success state.
+const FORM_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT as string | undefined;
+
 export function Contact() {
   const ref = useReveal();
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   return (
     <section
@@ -46,9 +53,33 @@ export function Contact() {
               </div>
             ) : (
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  setSubmitted(true);
+                  setError(null);
+                  const form = e.currentTarget;
+                  if (!FORM_ENDPOINT) {
+                    // Demo mode — no backend wired yet
+                    setSubmitted(true);
+                    return;
+                  }
+                  setSubmitting(true);
+                  try {
+                    const data = new FormData(form);
+                    const res = await fetch(FORM_ENDPOINT, {
+                      method: "POST",
+                      body: data,
+                      headers: { Accept: "application/json" },
+                    });
+                    if (!res.ok) throw new Error("Network error");
+                    setSubmitted(true);
+                    form.reset();
+                  } catch {
+                    setError(
+                      "Something went wrong. Please call (610) 647-1234 instead."
+                    );
+                  } finally {
+                    setSubmitting(false);
+                  }
                 }}
                 className="space-y-5"
               >
@@ -63,11 +94,15 @@ export function Contact() {
                   textarea
                   required
                 />
+                {error && (
+                  <p className="text-sm text-destructive">{error}</p>
+                )}
                 <button
                   type="submit"
-                  className="group inline-flex items-center gap-2 px-8 py-4 bg-gold text-primary-foreground font-medium rounded-sm hover:bg-gold-bright transition-all duration-300 hover:gold-glow"
+                  disabled={submitting}
+                  className="group inline-flex items-center gap-2 px-8 py-4 bg-gold text-primary-foreground font-medium rounded-sm hover:bg-gold-bright transition-all duration-300 hover:gold-glow disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Send Message
+                  {submitting ? "Sending..." : "Send Message"}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </button>
               </form>
