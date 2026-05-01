@@ -29,14 +29,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Willistown Auto" },
+      { name: "description", content: "A premium, cinematic single-page website for Willistown Auto Repair, designed to convert visitors into customers." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Willistown Auto" },
+      { property: "og:description", content: "A premium, cinematic single-page website for Willistown Auto Repair, designed to convert visitors into customers." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Willistown Auto" },
+      { name: "twitter:description", content: "A premium, cinematic single-page website for Willistown Auto Repair, designed to convert visitors into customers." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ebd32800-8ea1-483c-890c-5cc51e7a4316/id-preview-6cd51329--dd16b2a6-e2c3-4859-8c5b-6f4d97c8f19a.lovable.app-1776997288179.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ebd32800-8ea1-483c-890c-5cc51e7a4316/id-preview-6cd51329--dd16b2a6-e2c3-4859-8c5b-6f4d97c8f19a.lovable.app-1776997288179.png" },
     ],
     links: [
       {
